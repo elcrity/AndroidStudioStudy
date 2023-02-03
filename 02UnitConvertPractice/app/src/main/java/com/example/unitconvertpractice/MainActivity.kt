@@ -3,6 +3,7 @@ package com.example.unitconvertpractice
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputBinding
 import android.widget.AdapterView
@@ -38,10 +39,47 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun convertUnit() {
-//        binding.resultText.text = when(binding.startunitSpinner){
-//            "mm" -> 1
-//            "cm" -> 2
-//            "m" -> 3
-//            else -> 4
+        Log.v("MainActivity", "convertUnit start")
+        var num = binding.startText.text.toString().toDouble()
+        Log.v("MainActivity", "make num")
+        num = when(binding.startunitSpinner.selectedItem.toString()) {
+            "mm" -> {
+                Log.v("MainActivity", "mmS")
+                num
+            }
+            "cm" -> {
+                Log.v("MainActivity", "cmS")
+                num * 10.0
+            }
+            "m" -> {
+                Log.v("MainActivity", "mS")
+                num * 1000.0
+            }
+            else -> {
+                Log.v("MainActivity", "kmS")
+                num * 100000.0
+            }
+        }
+
+        num = when(binding.resultunitSpinner.selectedItem.toString()){
+            "mm" -> {
+                Log.v("MainActivity", "mmR")
+                num
+            }
+            "cm" -> {
+                Log.v("MainActivity", "cmR")
+                num / 10.0
+            }
+            "m" -> {
+                Log.v("MainActivity", "mR")
+                num / 1000.0
+            }
+            else -> {
+                Log.v("MainActivity", "kmR")
+                num / 100000.0
+            }
+        }
+
+        binding.resultText.text = num.toString()
     }
 }
