@@ -1,0 +1,60 @@
+open class Item(val name: String, val price: Int)
+
+class Noodles : Item("국수", 10){
+    override fun toString():String{
+        return name
+    }
+}
+
+class Vegetables(vararg val toppings: String) : Item("채소", 5){
+    override fun toString():String{
+        if(toppings.isEmpty()){
+            return name + " 오늘의 메뉴"
+        }else{
+            return name +" " + toppings.joinToString()
+        }
+
+    }
+}
+
+class Order(val orderNum : Int){
+    private val menuList = mutableListOf<Item>()
+
+    fun addMenu(newMenu : Item){
+        menuList.add(newMenu)
+    }
+
+    fun addAll(newMenus : List<Item>){
+        menuList.addAll(newMenus)
+    }
+
+    fun print(){
+        var totalPrice = 0
+        println("주문번호 #${orderNum}")
+        for(item in menuList){
+            println("${item}: ${item.price}")
+            totalPrice += item.price
+        }
+        println("총 가격: $${totalPrice}")
+    }
+}
+
+fun main() {
+    val order1 = Order(1)
+    order1.addMenu(Noodles())
+    order1.print()
+
+    println()
+
+    val order2 = Order(2)
+    order2.addMenu(Noodles())
+    order2.addMenu(Vegetables())
+    order2.print()
+
+    println()
+
+    val order3 = Order(3)
+    val items = listOf(Noodles(), Vegetables("당근", "콩", "샐러리"))
+    order3.addAll(items)
+    order3.print()
+}
