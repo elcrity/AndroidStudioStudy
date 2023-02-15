@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.affirmationsreview.R
@@ -21,11 +22,13 @@ class ItemAdapter(
     private val context: Context,
     private val dataset: List<Affirmation>
     ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view){
+        val imageView : ImageView = view.findViewById(R.id.item_image)
         val textView: TextView = view.findViewById(R.id.item_title)
     }
     //onCreateViewHolder() 메서드는 RecyclerView의 새 뷰 홀더를 만들기 위해 레이아웃 관리자를 호출합니다
-    //parent - 항목 뷰가 하위 요ㄹ소로 사용되서 연결되는 뷰 그룹, 여기서 상위요소는 RecyclerView
+    //parent - 항목 뷰가 하위 요소로 사용되서 연결되는 뷰 그룹, 여기서 상위요소는 RecyclerView
     //viewType - 동일한 RecyclerView에 항목 뷰 유형이 여러개일때 중요. 동일한 항목 뷰 유혀을 가진 뷰만 재활용 가능
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         //LayoutInflater - 메서드에서 제공된 컨텍스트(parent(ItemAdapter)의 parent)XML레이아웃을 뷰 객체의 계층 구조로 확장해줌.
@@ -43,6 +46,7 @@ class ItemAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = dataset[position]
         holder.textView.text = context.resources.getString(item.stringResourceId)
+        holder.imageView.setImageResource(item.imageResourceId)
     }
     //메서드의 데이터 세트 크기 반환
     override fun getItemCount() = dataset.size

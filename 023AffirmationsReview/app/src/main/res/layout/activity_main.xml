@@ -11,7 +11,8 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
         android:scrollbars="vertical"/>
     <!--    app:layoutManager="LinearLayoutManager"
             항목 정렬을 위하나 레이아웃 매니저, 여기서는 세로 항목으로 표시하므로 "LinearLayoutManager" 사용
