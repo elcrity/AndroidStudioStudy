@@ -54,10 +54,6 @@ class DogCardAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogCardViewHolder {
 
-
-
-
-
         // TODO: Use a conditional to determine the layout type and set it accordingly.
         //  if the layout variable is Layout.GRID the grid list item should be used. Otherwise the
         //  the vertical/horizontal list item should be used.
