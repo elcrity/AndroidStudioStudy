@@ -1,4 +1,4 @@
-# Android Study quiz 정리
+# Android Study 정리
 
 1. 뷰 그룹의 주요 목적은?
     - View 개체의 컨테이너 역할을 하며, 개체 내에서 View 개체를 정렬하는 역할.
