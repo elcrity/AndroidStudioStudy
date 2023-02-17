@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
+        android:scrollbars="vertical"/>
+    <!--    app:layoutManager="LinearLayoutManager"
+            항목 정렬을 위하나 레이아웃 매니저, 여기서는 세로 항목으로 표시하므로 "LinearLayoutManager" 사용
+            android:scrollbars="vertical"
+            화면보다 긴 항목을 세로로 스크롤할수 있게 해줌
+     -->
+</FrameLayout>
