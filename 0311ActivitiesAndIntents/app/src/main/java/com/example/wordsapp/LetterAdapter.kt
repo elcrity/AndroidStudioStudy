@@ -15,6 +15,7 @@
  */
 package com.example.wordsapp
 
+import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -62,6 +63,14 @@ class LetterAdapter :
     override fun onBindViewHolder(holder: LetterViewHolder, position: Int) {
         val item = list.get(position)
         holder.button.text = item.toString()
+        holder.button.setOnClickListener {
+            val context = holder.itemView.context
+            //컨텍스트와 대상 활동의 클래스 이름
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra(DetailActivity.LETTER, holder.button.text.toString())
+            //extra란? 나중에 검색할수 있도록 이름이 지정된 숫자나 문자열과 같은 데이터
+            context.startActivity(intent)
+        }
     }
 
     // Setup custom accessibility delegate to set the text read with

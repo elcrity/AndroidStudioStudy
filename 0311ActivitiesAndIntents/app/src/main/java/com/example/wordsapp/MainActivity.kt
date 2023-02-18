@@ -16,7 +16,11 @@
 package com.example.wordsapp
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordsapp.databinding.ActivityMainBinding
@@ -26,6 +30,61 @@ import com.example.wordsapp.databinding.ActivityMainBinding
  */
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
+    private var isLinearLayoutManager = true
+
+    private fun chooseLayout(){
+        // linear레이아웃과 grid레이아웃 관리자 할당
+        if(isLinearLayoutManager){
+            recyclerView.layoutManager = LinearLayoutManager(this)
+        }else{
+            recyclerView.layoutManager = GridLayoutManager(this, 4)
+        }
+        recyclerView.adapter = LetterAdapter()
+    }
+
+    //아이콘 변경
+    private fun setIcon(menuItem: MenuItem?){
+        //누를때마다 grid아이콘과 linear아이콘으로 변경
+        if(menuItem == null)
+            return
+        menuItem.icon =
+            if (isLinearLayoutManager)
+                ContextCompat.getDrawable(this, R.drawable.ic_grid_layout)
+            else ContextCompat.getDrawable(this, R.drawable.ic_linear_layout)
+    }
+
+    //옵션 메뉴 확장하여 추가 설정 실행
+   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.layout_menu, menu)
+
+        val layoutButton = menu?.findItem(R.id.action_switch_layout)
+        // Calls code to set the icon based on the LinearLayoutManager of the RecyclerView
+        setIcon(layoutButton)
+
+        return true
+    }
+
+    //버튼이 선택될때 실제로 chooseLayout()을 실행
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            //item의 itemId값이 R.id.action_switch_layout과 같으면
+            R.id.action_switch_layout -> {
+                // 버튼 누를때마다 isLinearlayoutManager를 true, false 반복
+                isLinearLayoutManager = !isLinearLayoutManager
+                // Sets layout and icon
+                chooseLayout()
+                setIcon(item)
+
+                return true
+            }
+            //  Otherwise, do nothing and use the core event handling
+
+            // when clauses require that all possible paths be accounted for explicitly,
+            //  for instance both the true and false cases if the value is a Boolean,
+            //  or an else to catch all unhandled cases.
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +93,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         recyclerView = binding.recyclerView
-        // Sets the LinearLayoutManager of the recyclerview
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = LetterAdapter()
+        //레이아웃 관리자와 어뎁터가 chooseLayout에서 설정
+        chooseLayout()
+
     }
 
 }
