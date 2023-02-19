@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun chooseLayout(){
         // linear레이아웃과 grid레이아웃 관리자 할당
+        // onOptionsItemSelected과 합쳐져서 실행될때마다
         if(isLinearLayoutManager){
             recyclerView.layoutManager = LinearLayoutManager(this)
         }else{
