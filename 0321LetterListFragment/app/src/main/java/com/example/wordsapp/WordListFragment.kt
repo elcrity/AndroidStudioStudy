@@ -1,4 +1,4 @@
-package com.example.letterlistfragment
+package com.example.wordsapp
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.wordsapp.R
-import com.example.wordsapp.WordAdapter
 import com.example.wordsapp.databinding.FragmentLetterListBinding
 
 class WordListFragment : Fragment() {
@@ -19,6 +17,7 @@ class WordListFragment : Fragment() {
 
     private var _binding : FragmentLetterListBinding? = null
     private val binding get() = _binding!!
+    private lateinit var letterId: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +28,14 @@ class WordListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            //letterId = it.getString(LETTER).toString() == activity?.intent?.extras?.getString(LETTER).toString()
+            letterId = it.getString(LETTER).toString()
+        }
+    }
 
     /*
         val letterId = intent?.extras?.getString(WordListFragment.LETTER).toString()
@@ -54,15 +61,17 @@ class WordListFragment : Fragment() {
 
         //가져온 recyclerView에 WordAdapter 객체를 생성하여 어댑터로 할당.
         // 이 어댑터는 알파벳 문자열 하나(LETTER)를 인자로 받아서 해당 알파벳으로 시작하는 단어들을 RecyclerView에 보여주는 역할을 합니다.
-        recyclerView.adapter = WordAdapter(activity?.intent?.extras?.getString(LETTER).toString(), requireContext())
+        recyclerView.adapter = WordAdapter(letterId, requireContext())
         //가져온 recyclerView에 DividerItemDecoration 객체를 생성하여 추가합니다.
         // DividerItemDecoration은 RecyclerView의 각 아이템 사이에 구분선을 추가하는 데 사용됩니다.
         // 이 구분선은 수직 방향으로 설정됩니다.
-        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        )
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding
+        _binding = null
     }
 }
