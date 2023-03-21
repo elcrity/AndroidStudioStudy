@@ -35,7 +35,7 @@ class GameFragment : Fragment() {
 
     // Binding object instance with access to the views in the game_fragment.xml layout
     private lateinit var binding: GameFragmentBinding
-    private val viewModel : GameViewModel by viewModels() //view모델로 속성 위임
+    private val viewModel: GameViewModel by viewModels() //view모델로 속성 위임
     /*
     코틀린은 var속성일때는 자동으로 getter, setter함수가 생성
     val의 경우 기본적으로 getter함수만 생성, 속성 위임을 사용하면 getter-setter의 책임을 다른 클래스에 넘길수 있음
@@ -55,11 +55,11 @@ class GameFragment : Fragment() {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         // Inflate the layout XML file and return a binding object instance
-        binding = DataBindingUtil.inflate(inflater,R.layout.game_fragment, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.game_fragment, container, false)
         return binding.root
     }
 
@@ -95,17 +95,17 @@ class GameFragment : Fragment() {
         //이렇게 하면 word_count라는 문자열 리소스에 newWordCount와  MAX_NO_OF_WORDS이라는 값이 삽입됩니다.
     }
 
-    fun showFinalScoreDialog(){
+    fun showFinalScoreDialog() {
         MaterialAlertDialogBuilder(requireContext())
             //Context는 애플리케이션이나 활동, 프래그먼트의 컨텍스트나 현재 상태를 나타냅니다.
             //활동, 프래그먼트, 애플리케이션과 관련된 정보를 포함하고 있으며 일반적으로 리소스, 데이터베이스, 기타 시스템 서비스에 액세스하는 데 사용
             .setTitle(getString(R.string.congratulations))
-            .setMessage(getString(R.string.you_scored,viewModel.score.value))
+            .setMessage(getString(R.string.you_scored, viewModel.score.value))
             .setCancelable(false)
-            .setNegativeButton(getString(R.string.exit)){ _, _ ->
+            .setNegativeButton(getString(R.string.exit)) { _, _ ->
                 exitGame()
             }
-            .setPositiveButton(getString((R.string.play_again))){_,_ ->
+            .setPositiveButton(getString((R.string.play_again))) { _, _ ->
                 restartGame()
             }
             .show()
@@ -121,13 +121,13 @@ class GameFragment : Fragment() {
     private fun onSubmitWord() {
         val playerWord = binding.textInputEditText.text.toString()
 
-        if(viewModel.isUserWordCorrect(playerWord)) {
+        if (viewModel.isUserWordCorrect(playerWord)) {
             setErrorTextField(false)
             if (viewModel.nextWord()) {
             } else {
                 showFinalScoreDialog()
             }
-        }else{
+        } else {
             setErrorTextField(true)
         }
     }
@@ -137,9 +137,9 @@ class GameFragment : Fragment() {
      * Increases the word count.
      */
     private fun onSkipWord() {
-        if(viewModel.nextWord()){
+        if (viewModel.nextWord()) {
             setErrorTextField(false)
-        }else{
+        } else {
             showFinalScoreDialog()
         }
     }

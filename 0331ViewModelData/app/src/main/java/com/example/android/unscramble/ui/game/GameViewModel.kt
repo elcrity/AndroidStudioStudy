@@ -24,65 +24,65 @@ import androidx.lifecycle.ViewModel
 * */
 class GameViewModel : ViewModel() {
     private val _score = MutableLiveData(0)
-    val score : LiveData<Int>
+    val score: LiveData<Int>
         get() = _score
 
     private val _currentWordCount = MutableLiveData(0)
-    val currentWordCount : LiveData<Int>
+    val currentWordCount: LiveData<Int>
         get() = _currentWordCount
 
     //LiveData,MutableLiveData 객체의 값은 동일하게 유지되고 저장된 데이터만 변경되기때문에 변수 유형을 val로 변경
     private val _currentScrambledWord = MutableLiveData<String>()
-    private val wordsList : MutableList<String> = mutableListOf()
+    private val wordsList: MutableList<String> = mutableListOf()
     private lateinit var currentWord: String
 
     //LiveData객체 내에 있는 데이터에 액세스 하기 위해 value속성 사용 -> getNextWord()
     val currentScrambledWord: LiveData<String>
         get() = _currentScrambledWord
 
-    init{
+    init {
         Log.d("GameFragment", "GameViewModelCreated!")
         getNextWord()
     }
 
-    private fun getNextWord(){
+    private fun getNextWord() {
         currentWord = allWordsList.random()
         val temp = currentWord.toCharArray()
         temp.shuffle()
 
-        while(String(temp).equals(currentWord,false)) {
+        while (String(temp).equals(currentWord, false)) {
             temp.shuffle()
         }
         Log.d("GameFragment", "2")
-        if(wordsList.contains(currentWord)){
+        if (wordsList.contains(currentWord)) {
             getNextWord()
-        }else{
+        } else {
             _currentScrambledWord.value = String(temp)
             _currentWordCount.value = _currentWordCount.value?.inc()
             wordsList.add(currentWord)
         }
     }
 
-    fun isUserWordCorrect(word : String) : Boolean{
-        if(word.equals(currentWord, true)){
+    fun isUserWordCorrect(word: String): Boolean {
+        if (word.equals(currentWord, true)) {
             increaseScore()
             return true
-        }else
+        } else
             return false
     }
 
-    fun nextWord():Boolean{
-        return if(currentWordCount.value!! < MAX_NO_OF_WORDS){
+    fun nextWord(): Boolean {
+        return if (currentWordCount.value!! < MAX_NO_OF_WORDS) {
             getNextWord()
             true
-        }else false
+        } else false
     }
 
-    private fun increaseScore(){
+    private fun increaseScore() {
         _score.value = (_score.value)?.plus(SCORE_INCREASE)
     }
 
-    fun reinitializeDate(){
+    fun reinitializeDate() {
         _score.value = 0
         _currentWordCount.value = 0
         wordsList.clear()
