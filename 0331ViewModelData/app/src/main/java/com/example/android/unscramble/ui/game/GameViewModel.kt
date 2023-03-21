@@ -1,6 +1,8 @@
 package com.example.android.unscramble.ui.game
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 //viewModel의 서브클래스 GameViewModel
@@ -21,17 +23,21 @@ import androidx.lifecycle.ViewModel
 
 * */
 class GameViewModel : ViewModel() {
-    private var _score = 0
-    val score : Int
+    private val _score = MutableLiveData(0)
+    val score : LiveData<Int>
         get() = _score
-    private var _currentWordCount = 0
-    val currentWordCount : Int
+
+    private val _currentWordCount = MutableLiveData(0)
+    val currentWordCount : LiveData<Int>
         get() = _currentWordCount
-    private lateinit var _currentScrambledWord :String
-    private var wordsList : MutableList<String> = mutableListOf()
+
+    //LiveData,MutableLiveData 객체의 값은 동일하게 유지되고 저장된 데이터만 변경되기때문에 변수 유형을 val로 변경
+    private val _currentScrambledWord = MutableLiveData<String>()
+    private val wordsList : MutableList<String> = mutableListOf()
     private lateinit var currentWord: String
 
-    val currentScrambledWord: String
+    //LiveData객체 내에 있는 데이터에 액세스 하기 위해 value속성 사용 -> getNextWord()
+    val currentScrambledWord: LiveData<String>
         get() = _currentScrambledWord
 
     init{
@@ -51,8 +57,8 @@ class GameViewModel : ViewModel() {
         if(wordsList.contains(currentWord)){
             getNextWord()
         }else{
-            _currentScrambledWord = String(temp)
-            ++_currentWordCount
+            _currentScrambledWord.value = String(temp)
+            _currentWordCount.value = _currentWordCount.value?.inc()
             wordsList.add(currentWord)
         }
     }
@@ -66,24 +72,20 @@ class GameViewModel : ViewModel() {
     }
 
     fun nextWord():Boolean{
-        return if(currentWordCount < MAX_NO_OF_WORDS){
+        return if(currentWordCount.value!! < MAX_NO_OF_WORDS){
             getNextWord()
             true
         }else false
     }
 
     private fun increaseScore(){
-        _score += SCORE_INCREASE
+        _score.value = (_score.value)?.plus(SCORE_INCREASE)
     }
 
     fun reinitializeDate(){
-        _score = 0
-        _currentWordCount = 0
+        _score.value = 0
+        _currentWordCount.value = 0
         wordsList.clear()
         getNextWord()
-    }
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("GameFragment", "GameViewModelCleared!")
     }
 }
