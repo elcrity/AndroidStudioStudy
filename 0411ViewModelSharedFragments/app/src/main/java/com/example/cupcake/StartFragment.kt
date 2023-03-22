@@ -35,7 +35,7 @@ class StartFragment : Fragment() {
     // This property is non-null between the onCreateView() and onDestroyView() lifecycle callbacks,
     // when the view hierarchy is attached to the fragment.
     private var binding: FragmentStartBinding? = null
-    private val sharedViewModel : OrderViewModel by activityViewModels()
+    private val sharedViewModel: OrderViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +64,7 @@ class StartFragment : Fragment() {
      */
     fun orderCupcake(quantity: Int) {
         sharedViewModel.setQuantity(quantity)
-        if(sharedViewModel.hasNoFlavorSet()){
+        if (sharedViewModel.hasNoFlavorSet()) {
             sharedViewModel.setFlavor(getString(R.string.vanilla))
         }
         findNavController().navigate(R.id.action_startFragment_to_flavorFragment)
