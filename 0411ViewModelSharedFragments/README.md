@@ -178,3 +178,52 @@ val price: LiveData<String> =
 ```
 
 sbutotal_price를 사용하고 %s에는 viewModel.price입력
+
+---------
+
+9. 앱에서 위로 이동 처리
+```kotlin 
+override fun onSupportNavigateUp(): Boolean {
+   return navController.navigateUp() || super.onSupportNavigateUp()//위로 이동 처리를 navController에 요청, 그렇지 않으면 Up버튼을 처리하는 슈퍼클래스 구현으로 대체
+   }
+```
+
+10. popUP속성들
+    app:popUpTo="@id/startFragment" -> startFragment에 도달하기까지 있는 백스택 제거
+    즉 뒤로가기 누르면 startFragment -> startFragment로 가게 되어 종료를 위해서 두번 눌러야함
+![팝업](https://developer.android.com/static/codelabs/basic-android-kotlin-training-navigation-backstack/img/dd0fedc6e231e595_856.png?hl=ko)
+     app:popUpToInclusive="true"을 추가할시 startFragment까지 백스택 제거
+![팝업인클루시브](https://developer.android.com/static/codelabs/basic-android-kotlin-training-navigation-backstack/img/cf0e80b4907d80dd_856.png?hl=ko)
+
+11. 수량 문자열 사용
+```xml
+    <plurals name="cupcakes">
+       <item quantity="one">%d cupcake</item>//단수 (quantity="one")인 경우 단수형 문자열 사용
+       <item quantity="other">%d cupcakes</item>//다른 경우 복수형 문자열 사용
+    </plurals>
+```
+
+12. 인텐트 사용
+```kotlin
+    val intent = Intent(Intent.ACTION_SEND)//인텐트 작업으로 Intent.ACTION_SEND 지정
+    .setType("text/plain")//유형을 text/plain으로 지정
+    .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.new_cupcake_order))//제목을 위한 인텐트 항목, 제목은 getString(R.string.new_cupcake_order)가 됨
+    .putExtra(Intent.EXTRA_TEXT, orderSummary)// 내용을 위한 인텐트 항목, 내용은 orderSummary가 됨
+
+//인텐트를 처리할 수 있는 앱이 있는지 확인. 이렇게 하면 인텐트를 처리할 앱이 없는 경우에 비정상종료가 되지 않음
+    if (activity?.packageManager?.resolveActivity(intent, 0) != null) {
+       startActivity(intent)
+    }
+```
+getQuantityString(R.plurals.cupcakes, 1, 1) 호출 시 1 cupcake 반환
+getQuantityString(R.plurals.cupcakes, 6, 6) 호출 시 6 cupcakes 반환
+```kotlin
+   getString(R.string.order_details, "12", "Chocolate", "Sat Dec 12", "$24.00")
+ ```
+결과 - 
+   Quantity: 12 cupcakes
+   Flavor: Chocolate
+   Pickup date: Sat Dec 12
+   Total: $24.00
+   
+   Thank you!

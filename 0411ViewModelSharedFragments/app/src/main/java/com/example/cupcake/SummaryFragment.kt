@@ -15,6 +15,7 @@
  */
 package com.example.cupcake
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.cupcake.databinding.FragmentSummaryBinding
 import com.example.cupcake.model.OrderViewModel
 
@@ -59,8 +61,34 @@ class SummaryFragment : Fragment() {
     /**
      * Submit the order by sharing out the order details to another app via an implicit intent.
      */
+
+    //<string name="order_details">Quantity: %1$s cupcakes \n Flavor: %2$s \nPickup date: %3$s \n
+    //        Total: %4$s \n\n Thank you!</string>
     fun sendOrder() {
-        Toast.makeText(activity, "Send Order", Toast.LENGTH_SHORT).show()
+        val numberOfCupcakes = sharedViewModel.quantity.value ?: 0
+        //getQuantityString(R.plurals.cupcakes, 1, 1) 호출시 1 cupcake 반환 6,6일시 6 cupcakes 반환
+        val orderSummary = getString(
+            R.string.order_details,
+            resources.getQuantityString(R.plurals.cupcakes, numberOfCupcakes, numberOfCupcakes),
+            sharedViewModel.flavor.value.toString(),
+            sharedViewModel.date.value.toString(),
+            sharedViewModel.price.value.toString()
+        )
+
+        val intent = Intent(Intent.ACTION_SEND)//인텐트 작업 지정
+            .setType("text/plain")//유형 지정
+            .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.new_cupcake_order))//이메일 제목과
+            .putExtra(Intent.EXTRA_TEXT, orderSummary)//이메일 본문을 위한 인텐트 추가항목 포함
+
+        //암시적 인텐트라 특정 구성요소나 앱을 사전에 알필요는 없음. 처리할수 있는 앱이 있는지 확인. 이렇게 하면 앱이 없어도 비정상 종료X
+        if (activity?.packageManager?.resolveActivity(intent, 0) != null) {
+            startActivity(intent)
+        }
+    }
+
+    fun cancelOrder() {
+        sharedViewModel.resetOrder()
+        findNavController().navigate(R.id.action_summaryFragment_to_startFragment)
     }
 
     /**
