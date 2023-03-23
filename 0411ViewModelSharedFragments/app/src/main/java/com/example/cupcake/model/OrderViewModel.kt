@@ -1,9 +1,13 @@
 package com.example.cupcake.model
 
+import android.util.Log
+import android.widget.RadioButton
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.cupcake.R
+import com.example.cupcake.databinding.FragmentPickupBinding
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -72,6 +76,7 @@ class OrderViewModel : ViewModel() {
             //캘린더 1일 증가 후 추가시킴
             calendar.add(Calendar.DATE, 1)
         }
+        Log.d("Date", "datemake")
         return options
     }
 
@@ -81,6 +86,7 @@ class OrderViewModel : ViewModel() {
         _date.value = dateOption[0]
         _price.value = 0.0
     }
+
 
     fun updatePrice() {
         var calculatedPrice = (_quantity.value ?: 0) * PRICE_PER_CUPCAKE

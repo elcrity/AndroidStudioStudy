@@ -16,10 +16,14 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.databinding.adapters.CalendarViewBindingAdapter.setDate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -36,6 +40,7 @@ class PickupFragment : Fragment() {
     // when the view hierarchy is attached to the fragment.
     private var binding: FragmentPickupBinding? = null
     private val sharedViewModel: OrderViewModel by activityViewModels()
+    private lateinit var option : RadioButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,14 +58,23 @@ class PickupFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
             pickupFragment = this@PickupFragment
+            option = binding!!.dateOptions.findViewById(R.id.option0)
+        }
+
+        if(sharedViewModel.flavor.value.equals("Vanilla")) {
+            option.isEnabled = false
+            option.isChecked = false
         }
     }
-
     /**
      * Navigate to the next screen to see the order summary.
      */
     fun goToNextScreen() {
-        findNavController().navigate(R.id.action_pickupFragment_to_summaryFragment)
+        if(option.isEnabled){
+            findNavController().navigate(R.id.action_pickupFragment_to_summaryFragment)
+        }else{
+            Toast.makeText(requireActivity(), "잘못된 선택입니다", Toast.LENGTH_LONG).show()
+        }
     }
 
     fun cancelOrder() {
