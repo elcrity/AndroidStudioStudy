@@ -32,7 +32,7 @@ class SportsAdapter(private val onItemClicked: (Sport) -> Unit) :
     private lateinit var context: Context
 
     class SportsViewHolder(private var binding: SportsListItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {//레이아웃 파일에 바인딩
 
         fun bind(sport: Sport, context:Context) {
             binding.title.text = context.getString(sport.titleResourceId)
@@ -42,7 +42,7 @@ class SportsAdapter(private val onItemClicked: (Sport) -> Unit) :
         }
     }
 
-    override fun onCreateViewHolder(
+    override fun onCreateViewHolder(//뷰 확장
         parent: ViewGroup,
         viewType: Int
     ): SportsViewHolder {
