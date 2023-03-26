@@ -47,18 +47,21 @@ class SportsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentSportsListBinding.bind(view)
-
         //FragmentActivity의 기본 클래스에서는 OnBackPressedDispatcher를 사용하여
         //뒤로 버튼의 동작을 제어할 수 있음
         val slidingPaneLayout = binding.slidingPaneLayout
 
         //안쪽이나 바깥쪽으로 스와이프 하지 못하도록 잠금
         slidingPaneLayout.lockMode = SlidingPaneLayout.LOCK_MODE_LOCKED
+
         //디스패처 OnBackPressedDispatcher를 사용하여 콜백을 등록
         //addCallBack() 메서드를 통애 콜백을 추가 이 메서드는 LifecycleOwner를 사용, 두번째 매개변수로 콜백 클래스 사용
-        //또한 액티비티 또는 프래그먼트는 연결된 LifecycleOwner 가 제거될때 등록된 콜백도 제거, 전체 기간이 짧은 프래그먼트 또는 기타 수명 주기 소유자에 사용하기 적합
         requireActivity().onBackPressedDispatcher.addCallback(
+            //requireActivity()는 프래그먼트에서 액티비티를 가져오는 메서드
             viewLifecycleOwner,
+            //LifecycleOwner가 Lifecycle.State.STARTED일 때만 OnBackPressedCallback이 추가
+            //액티비티 또는 프래그먼트는 연결된 LifecycleOwner 가 제거될때 등록된 콜백도 제거
+            //전체 기간이 짧은 프래그먼트 또는 기타 수명 주기 소유자에 사용하기 적합
             SportsListOnBackPressedCallback(slidingPaneLayout)
         )
 
@@ -94,17 +97,18 @@ class SportsListOnBackPressedCallback(
     }
 
     override fun handleOnBackPressed() {
+        //뒤로가기 누르면 단일 창 종료
         slidingPaneLayout.closePane()
     }
 
     override fun onPanelSlide(panel: View, slideOffset: Float) {
     }
 
-    override fun onPanelOpened(panel: View) {//세부 정보 창 열릴때
+    override fun onPanelOpened(panel: View) {//세부 정보 창 열려있을때 콜백을 사용 설정
         isEnabled = true
     }
 
-    override fun onPanelClosed(panel: View) {//세부 정보 창 닫힐때
+    override fun onPanelClosed(panel: View) {//세부 정보 창 닫히면 콜백 미사용
         isEnabled = false
     }
 }
