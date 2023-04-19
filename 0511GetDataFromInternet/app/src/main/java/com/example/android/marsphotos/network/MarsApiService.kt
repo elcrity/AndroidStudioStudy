@@ -25,6 +25,7 @@ private val retrofit = Retrofit.Builder()
 
 interface MarsApiService {
     @GET("photos")//@GET 주석을 사용하여 Retrofit에 GET 요청임을 알리고 엔드포인트 지정, 이 경우 엔드포인트는 photo
+    //https://android-kotlin-fun-mars-server.appspot.com/photos
     //정지함수 suspend
     suspend fun getPhoto(): List<MarsPhoto>
 }
